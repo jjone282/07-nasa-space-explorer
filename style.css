@@ -5,11 +5,26 @@
   padding: 0;
 }
 
+/* NASA-inspired design variables */
+:root {
+  --nasa-blue: #0b3d91;
+  --nasa-red: #fc3d21;
+  --space-black: #0b0f1a;
+  --star-white: #f8fbff;
+  --card-bg: #ffffff;
+  --soft-shadow: 0 8px 24px rgba(7, 23, 58, 0.15);
+}
+
 /* Base page styles */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f1f1f1;
+  font-family: "Barlow", sans-serif;
+  color: var(--star-white);
+  background:
+    radial-gradient(circle at 10% 15%, rgba(252, 61, 33, 0.12), transparent 28%),
+    radial-gradient(circle at 85% 20%, rgba(88, 140, 255, 0.14), transparent 32%),
+    linear-gradient(135deg, #02050e 0%, #091530 45%, #02050e 100%);
   padding: 20px;
+  min-height: 100vh;
 }
 
 /* Centered container */
@@ -29,9 +44,11 @@ body {
 }
 
 h1 {
-  font-family: Verdana, sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-weight: bold;
-  color: #212121;
+  color: var(--star-white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 /* Logo */
@@ -53,25 +70,32 @@ h1 {
 /* Inputs and buttons */
 input[type="date"],
 button {
-  font-family: Arial, sans-serif;
-  font-weight: normal;
-  color: #666;
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  color: var(--space-black);
   padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
   font-size: 16px;
   line-height: 1.4;
   width: 100%;
 }
 
+input[type="date"] {
+  background-color: rgba(248, 251, 255, 0.95);
+}
+
 /* Button specific */
 button {
-  background-color: #d3d3d3;
-  color: black;
+  background-color: var(--nasa-red);
+  color: var(--star-white);
   cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 button:hover {
-  background-color: #bfbfbf;
+  background-color: #e53116;
+  transform: translateY(-1px);
 }
 
 /* Stack horizontally on wider screens */
@@ -85,6 +109,26 @@ button:hover {
   button {
     width: auto;
   }
+}
+
+/* Random fact section */
+.space-fact {
+  margin: 0 20px 20px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--nasa-red);
+  background: linear-gradient(90deg, rgba(11, 61, 145, 0.35), rgba(11, 61, 145, 0.08));
+  border-radius: 8px;
+  box-shadow: var(--soft-shadow);
+}
+
+.space-fact h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.space-fact p {
+  line-height: 1.5;
 }
 
 /* Gallery flex container */
@@ -101,13 +145,20 @@ button:hover {
   flex: 1 1 100%;  /* full width by default */
   min-width: 280px;
   max-width: 500px;
-  background: white;
+  background: var(--card-bg);
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: var(--soft-shadow);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(7, 23, 58, 0.24);
 }
 
 /* Three columns on wider screens */
@@ -122,11 +173,27 @@ button:hover {
   height: 200px;
   object-fit: cover;
   border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+/* Smooth hover zoom effect */
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-item p,
+.gallery-item h3 {
+  margin-top: 10px;
+  padding: 5px;
+  color: var(--space-black);
+}
+
+.gallery-item h3 {
+  font-size: 18px;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 .gallery-item p {
-  margin-top: 10px;
-  padding: 5px;
   font-size: 14px;
 }
 
@@ -135,10 +202,79 @@ button:hover {
   flex: 1 1 100%;
   text-align: center;
   padding: 40px;
-  color: #666;
+  color: var(--star-white);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
 }
 
 .placeholder-icon {
   font-size: 48px;
   margin-bottom: 20px;
+}
+
+.loading {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(2, 5, 14, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  position: relative;
+  width: min(820px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  color: var(--space-black);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--soft-shadow);
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  color: var(--space-black);
+  cursor: pointer;
+  width: auto;
+  padding: 4px 8px;
+}
+
+#modalImage {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+#modalTitle {
+  font-family: "Space Grotesk", sans-serif;
+  margin-bottom: 8px;
+}
+
+.modal-date {
+  color: #4b5563;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.modal-explanation {
+  line-height: 1.6;
 }
